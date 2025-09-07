@@ -41,39 +41,39 @@
 #include <time.h>
 
 enum EPOLL_EVENTS {
-  EPOLLIN          = 0x0001,
+	EPOLLIN = 0x0001,
 #define EPOLLIN          EPOLLIN
-  EPOLLPRI         = 0x0002,
+	EPOLLPRI = 0x0002,
 #define EPOLLPRI         EPOLLPRI
-  EPOLLOUT         = 0x0004,
+	EPOLLOUT = 0x0004,
 #define EPOLLOUT         EPOLLOUT
-  EPOLLERR         = 0x0008,
+	EPOLLERR = 0x0008,
 #define EPOLLERR         EPOLLERR
-  EPOLLHUP         = 0x0010,
+	EPOLLHUP = 0x0010,
 #define EPOLLHUP         EPOLLHUP
-  EPOLLNVAL        = 0x0020,
+	EPOLLNVAL = 0x0020,
 #define EPOLLNVAL        EPOLLNVAL
-  EPOLLRDNORM      = 0x0040,
+	EPOLLRDNORM = 0x0040,
 #define EPOLLRDNORM      EPOLLRDNORM
-  EPOLLRDBAND      = 0x0080,
+	EPOLLRDBAND = 0x0080,
 #define EPOLLRDBAND      EPOLLRDBAND
-  EPOLLWRNORM      = 0x0100,
+	EPOLLWRNORM = 0x0100,
 #define EPOLLWRNORM      EPOLLWRNORM
-  EPOLLWRBAND      = 0x0200,
+	EPOLLWRBAND = 0x0200,
 #define EPOLLWRBAND      EPOLLWRBAND
-  EPOLLMSG         = 0x0400, /* Never reported. */
+	EPOLLMSG = 0x0400, /* Never reported. */
 #define EPOLLMSG         EPOLLMSG
-  EPOLLRDHUP       = 0x2000,
+	EPOLLRDHUP = 0x2000,
 #define EPOLLRDHUP       EPOLLRDHUP
-  EPOLL_URING_WAKE = (unsigned)(1U << 27),
+	EPOLL_URING_WAKE = (unsigned)(1U << 27),
 #define EPOLL_URING_WAKE EPOLL_URING_WAKE
-  EPOLLEXCLUSIVE   = (unsigned)(1U << 28),
+	EPOLLEXCLUSIVE = (unsigned)(1U << 28),
 #define EPOLLEXCLUSIVE   EPOLLEXCLUSIVE
-  EPOLLWAKEUP      = (unsigned)(1U << 29),
+	EPOLLWAKEUP = (unsigned)(1U << 29),
 #define EPOLLWAKEUP      EPOLLWAKEUP
-  EPOLLONESHOT     = (unsigned)(1U << 30),
+	EPOLLONESHOT = (unsigned)(1U << 30),
 #define EPOLLONESHOT     EPOLLONESHOT
-  EPOLLET          = (unsigned)(1U << 31)
+	EPOLLET = (unsigned)(1U << 31)
 #define EPOLLET          EPOLLET
 };
 
@@ -82,7 +82,7 @@ enum EPOLL_EVENTS {
 #define EPOLL_CTL_MOD    3
 
 enum {
-  EPOLL_CLOEXEC = 02000000 /*O_CLOEXEC*/
+	EPOLL_CLOEXEC = 02000000 /*O_CLOEXEC*/
 #define EPOLL_CLOEXEC EPOLL_CLOEXEC
 };
 
@@ -92,51 +92,53 @@ typedef uintptr_t SOCKET;
 #define _SIGSET_NWORDS (1024 / (8 * sizeof (size_t)))
 typedef struct
 {
-  size_t __val[_SIGSET_NWORDS];
+	size_t __val[_SIGSET_NWORDS];
 } sigset_t;
 
 typedef union epoll_data {
-  void* ptr;
-  int fd;
-  uint32_t u32;
-  uint64_t u64;
-  SOCKET sock; /* Windows specific */
-  HANDLE hnd;  /* Windows specific */
+	void* ptr;
+	int fd;
+	uint32_t u32;
+	uint64_t u64;
+	SOCKET sock; /* Windows specific */
+	HANDLE hnd;  /* Windows specific */
 } epoll_data_t;
 
+#pragma pack(push, 1)
 struct epoll_event {
-  uint32_t events;   /* Epoll events and flags */
-  epoll_data_t data; /* User data variable */
+	uint32_t events;   /* Epoll events and flags */
+	epoll_data_t data; /* User data variable */
 };
+#pragma pack(pop)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-WEPOLL_EXPORT HANDLE epoll_create(int size);
-WEPOLL_EXPORT HANDLE epoll_create1(int flags);
+	WEPOLL_EXPORT HANDLE epoll_create(int size);
+	WEPOLL_EXPORT HANDLE epoll_create1(int flags);
 
-WEPOLL_EXPORT int epoll_close(HANDLE ephnd);
+	WEPOLL_EXPORT int epoll_close(HANDLE ephnd);
 
-WEPOLL_EXPORT int epoll_ctl(HANDLE ephnd,
-                            int op,
-                            SOCKET sock,
-                            struct epoll_event* event);
+	WEPOLL_EXPORT int epoll_ctl(HANDLE ephnd,
+		int op,
+		SOCKET sock,
+		struct epoll_event* event);
 
-WEPOLL_EXPORT int epoll_wait(HANDLE ephnd,
-                             struct epoll_event* events,
-                             int maxevents,
-                             int timeout);
-WEPOLL_EXPORT int epoll_pwait(HANDLE ephnd,
-                              struct epoll_event* events,
-                              int maxevents,
-                              int timeout,
-                              const sigset_t* sigmask);
-WEPOLL_EXPORT int epoll_pwait2(HANDLE ephnd,
-                               struct epoll_event* events,
-                               int maxevents,
-                               const struct timespec* timeout,
-                               const sigset_t* sigmask);
+	WEPOLL_EXPORT int epoll_wait(HANDLE ephnd,
+		struct epoll_event* events,
+		int maxevents,
+		int timeout);
+	WEPOLL_EXPORT int epoll_pwait(HANDLE ephnd,
+		struct epoll_event* events,
+		int maxevents,
+		int timeout,
+		const sigset_t* sigmask);
+	WEPOLL_EXPORT int epoll_pwait2(HANDLE ephnd,
+		struct epoll_event* events,
+		int maxevents,
+		const struct timespec* timeout,
+		const sigset_t* sigmask);
 
 #ifdef __cplusplus
 } /* extern "C" */
